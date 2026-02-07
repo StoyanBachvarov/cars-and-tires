@@ -743,6 +743,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Hero Browse buttons
+    const browseCarsBtn = document.getElementById('browseCarsBtn');
+    const browseTiresBtn = document.getElementById('browseTiresBtn');
+    
+    if (browseCarsBtn) {
+        browseCarsBtn.addEventListener('click', function() {
+            showTab('cars');
+        });
+    }
+    
+    if (browseTiresBtn) {
+        browseTiresBtn.addEventListener('click', function() {
+            showTab('tires');
+        });
+    }
+    
     // Contact form submit
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
