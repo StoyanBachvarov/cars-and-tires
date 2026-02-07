@@ -170,13 +170,13 @@ function showTab(tabName) {
     const tabTrigger = new bootstrap.Tab(tab);
     tabTrigger.show();
     
-    // Wait for tab animation to complete, then scroll
+    // Wait for tab animation to complete, then scroll to Hot section
     setTimeout(() => {
-        const tabsSection = document.querySelector('.tabs-section');
-        if (tabsSection) {
-            tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const hotSection = document.querySelector(`#${tabName}-content .hot-items-section`);
+        if (hotSection) {
+            hotSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-    }, 200);
+    }, 300);
 }
 
 // ========================================
