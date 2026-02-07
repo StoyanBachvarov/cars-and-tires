@@ -158,32 +158,25 @@ function updateBreadcrumb(tab) {
 
 function showTab(tabName) {
     const tab = document.getElementById(`${tabName}-tab`);
-    if (!tab) return;
+    if (!tab) {
+        console.error(`Tab ${tabName}-tab not found`);
+        return;
+    }
     
-    // Use Bootstrap's tab show method
+    // Update breadcrumb
+    updateBreadcrumb(tabName);
+    
+    // Show the tab using Bootstrap's Tab API
     const tabTrigger = new bootstrap.Tab(tab);
-    
-    // Listen for when the tab is fully shown
-    const handleTabShown = function(e) {
-        // Update breadcrumb
-        updateBreadcrumb(tabName);
-        
-        // Scroll to the hot items section of the active tab
-        setTimeout(() => {
-            const hotSection = document.querySelector(`#${tabName}-content .hot-items-section`);
-            if (hotSection) {
-                hotSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-            }
-        }, 150);
-        
-        // Remove the event listener after it fires once
-        tab.removeEventListener('shown.bs.tab', handleTabShown);
-    };
-    
-    tab.addEventListener('shown.bs.tab', handleTabShown);
-    
-    // Show the tab
     tabTrigger.show();
+    
+    // Wait for tab animation to complete, then scroll
+    setTimeout(() => {
+        const tabsSection = document.querySelector('.tabs-section');
+        if (tabsSection) {
+            tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 200);
 }
 
 // ========================================
