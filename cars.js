@@ -130,7 +130,12 @@ function updateNavigation() {
             
             const section = this.getAttribute('data-section');
             if (section) {
-                scrollToSection(section);
+                // Special handling for Cars and Tires - show tabs
+                if (section === 'cars' || section === 'tires') {
+                    showTab(section);
+                } else {
+                    scrollToSection(section);
+                }
             }
         });
     });
@@ -152,17 +157,32 @@ function updateBreadcrumb(tab) {
 }
 
 function showTab(tabName) {
-    const tab = document.getElementById(`${tabName}-tab`);
-    if (tab) {
-        tab.click();
-        scrollToSection('home');
-        setTimeout(() => {
-            const tabSection = document.querySelector('.tabs-section');
-            if (tabSection) {
-                tabSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 100);
+    // First scroll to home/top of main content
+    const mainSection = document.getElementById('home');
+    if (mainSection) {
+        mainSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    
+    // Activate the correct tab
+    setTimeout(() => {
+        const tab = document.getElementById(`${tabName}-tab`);
+        if (tab) {
+            // Use Bootstrap's tab show method
+            const tabTrigger = new bootstrap.Tab(tab);
+            tabTrigger.show();
+            
+            // Update breadcrumb
+            updateBreadcrumb(tabName);
+            
+            // Scroll to tabs section after a brief delay
+            setTimeout(() => {
+                const tabSection = document.querySelector('.tabs-section');
+                if (tabSection) {
+                    tabSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 300);
+        }
+    }, 100);
 }
 
 // ========================================
