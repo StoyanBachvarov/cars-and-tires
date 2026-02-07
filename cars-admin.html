@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Cars & Tires Marketplace</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="cars-admin.css">
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center py-3 px-4">
+                <div class="header-left d-flex align-items-center">
+                    <button class="btn btn-link text-white sidebar-toggle me-3" id="sidebarToggle">
+                        <i class="fas fa-bars fa-lg"></i>
+                    </button>
+                    <h1 class="mb-0 admin-title">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Admin Panel
+                    </h1>
+                </div>
+                <div class="header-right d-flex align-items-center">
+                    <div class="user-info me-3">
+                        <span class="text-white">
+                            <i class="fas fa-user-circle fa-lg me-2"></i>
+                            Administrator
+                        </span>
+                    </div>
+                    <a href="cars.html" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>
+                        View Site
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Alert Container -->
+    <div class="alert-container" id="alertContainer"></div>
+
+    <!-- Main Container -->
+    <div class="admin-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-tab="cars" id="carsTabLink">
+                            <i class="fas fa-car me-2"></i>
+                            <span>Cars</span>
+                            <span class="badge bg-primary ms-auto" id="carsCount">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-tab="tires" id="tiresTabLink">
+                            <i class="fas fa-ring me-2"></i>
+                            <span>Tires</span>
+                            <span class="badge bg-primary ms-auto" id="tiresCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main-content">
+            
+            <!-- Cars Section -->
+            <section class="content-section active" id="carsSection">
+                <div class="section-header">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="section-title">
+                                <i class="fas fa-car me-2"></i>
+                                Manage Cars
+                            </h2>
+                            <p class="text-muted mb-0">View, add, edit, and delete car listings</p>
+                        </div>
+                        <button class="btn btn-primary btn-add" onclick="openAddModal('car')">
+                            <i class="fas fa-plus me-2"></i>
+                            Add New Car
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row" id="carsContainer">
+                    <!-- Cars will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Tires Section -->
+            <section class="content-section" id="tiresSection">
+                <div class="section-header">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="section-title">
+                                <i class="fas fa-ring me-2"></i>
+                                Manage Tires
+                            </h2>
+                            <p class="text-muted mb-0">View, add, edit, and delete tire listings</p>
+                        </div>
+                        <button class="btn btn-primary btn-add" onclick="openAddModal('tire')">
+                            <i class="fas fa-plus me-2"></i>
+                            Add New Tire
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row" id="tiresContainer">
+                    <!-- Tires will be dynamically loaded here -->
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <div class="container-fluid">
+            <div class="text-center py-3">
+                <p class="mb-0 text-muted">
+                    <i class="fas fa-copyright me-1"></i>
+                    2026 Cars & Tires Marketplace Admin Panel. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- View Details Modal -->
+    <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewDetailsModalLabel">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewDetailsBody">
+                    <!-- Details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Car Modal -->
+    <div class="modal fade" id="carModal" tabindex="-1" aria-labelledby="carModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="carModalLabel">
+                        <i class="fas fa-car me-2"></i>
+                        Add Car
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="carForm">
+                        <input type="hidden" id="carId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="carBrand" class="form-label">Brand *</label>
+                                <select class="form-select" id="carBrand" required>
+                                    <option value="">Select Brand</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Mercedes">Mercedes</option>
+                                    <option value="Audi">Audi</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="Volkswagen">Volkswagen</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="carModel" class="form-label">Model *</label>
+                                <input type="text" class="form-control" id="carModel" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="carYear" class="form-label">Year *</label>
+                                <input type="number" class="form-control" id="carYear" min="1900" max="2030" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carPrice" class="form-label">Price ($) *</label>
+                                <input type="number" class="form-control" id="carPrice" min="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carKilometers" class="form-label">Kilometers *</label>
+                                <input type="number" class="form-control" id="carKilometers" min="0" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="carColor" class="form-label">Color *</label>
+                                <select class="form-select" id="carColor" required>
+                                    <option value="">Select Color</option>
+                                    <option value="Black">Black</option>
+                                    <option value="White">White</option>
+                                    <option value="Silver">Silver</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Gray">Gray</option>
+                                    <option value="Green">Green</option>
+                                    <option value="Yellow">Yellow</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carTransmission" class="form-label">Transmission *</label>
+                                <select class="form-select" id="carTransmission" required>
+                                    <option value="">Select Transmission</option>
+                                    <option value="Automatic">Automatic</option>
+                                    <option value="Manual">Manual</option>
+                                    <option value="CVT">CVT</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carFuelType" class="form-label">Fuel Type *</label>
+                                <select class="form-select" id="carFuelType" required>
+                                    <option value="">Select Fuel Type</option>
+                                    <option value="Gasoline">Gasoline</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Electric">Electric</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="carDoors" class="form-label">Doors *</label>
+                                <select class="form-select" id="carDoors" required>
+                                    <option value="">Select Doors</option>
+                                    <option value="2">2</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carSeats" class="form-label">Seats *</label>
+                                <select class="form-select" id="carSeats" required>
+                                    <option value="">Select Seats</option>
+                                    <option value="2">2</option>
+                                    <option value="5">5</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="carIsHot" class="form-label">Hot Deal</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="carIsHot">
+                                    <label class="form-check-label" for="carIsHot">Mark as Hot Deal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="confirmCarSave()">
+                        <i class="fas fa-check me-2"></i>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Tire Modal -->
+    <div class="modal fade" id="tireModal" tabindex="-1" aria-labelledby="tireModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tireModalLabel">
+                        <i class="fas fa-ring me-2"></i>
+                        Add Tire
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="tireForm">
+                        <input type="hidden" id="tireId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tireBrand" class="form-label">Brand *</label>
+                                <select class="form-select" id="tireBrand" required>
+                                    <option value="">Select Brand</option>
+                                    <option value="Michelin">Michelin</option>
+                                    <option value="Bridgestone">Bridgestone</option>
+                                    <option value="Goodyear">Goodyear</option>
+                                    <option value="Continental">Continental</option>
+                                    <option value="Pirelli">Pirelli</option>
+                                    <option value="Dunlop">Dunlop</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tirePrice" class="form-label">Price ($) *</label>
+                                <input type="number" class="form-control" id="tirePrice" min="0" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tireWidth" class="form-label">Width *</label>
+                                <select class="form-select" id="tireWidth" required>
+                                    <option value="">Select Width</option>
+                                    <option value="195">195</option>
+                                    <option value="205">205</option>
+                                    <option value="215">215</option>
+                                    <option value="225">225</option>
+                                    <option value="235">235</option>
+                                    <option value="245">245</option>
+                                    <option value="255">255</option>
+                                    <option value="265">265</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="tireHeight" class="form-label">Height *</label>
+                                <select class="form-select" id="tireHeight" required>
+                                    <option value="">Select Height</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                    <option value="55">55</option>
+                                    <option value="60">60</option>
+                                    <option value="65">65</option>
+                                    <option value="70">70</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="tireWheel" class="form-label">Wheel (") *</label>
+                                <select class="form-select" id="tireWheel" required>
+                                    <option value="">Select Wheel</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tireSeason" class="form-label">Season *</label>
+                                <select class="form-select" id="tireSeason" required>
+                                    <option value="">Select Season</option>
+                                    <option value="Summer">Summer</option>
+                                    <option value="Winter">Winter</option>
+                                    <option value="All-Season">All-Season</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tireLoadIndex" class="form-label">Load Index *</label>
+                                <input type="number" class="form-control" id="tireLoadIndex" min="60" max="120" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tireSpeedRating" class="form-label">Speed Rating *</label>
+                                <select class="form-select" id="tireSpeedRating" required>
+                                    <option value="">Select Rating</option>
+                                    <option value="H">H (130 mph)</option>
+                                    <option value="V">V (149 mph)</option>
+                                    <option value="W">W (168 mph)</option>
+                                    <option value="Y">Y (186 mph)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="tireRunFlat" class="form-label">Run Flat</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="tireRunFlat">
+                                    <label class="form-check-label" for="tireRunFlat">Run Flat Tire</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="tireIsHot" class="form-label">Hot Deal</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="tireIsHot">
+                                    <label class="form-check-label" for="tireIsHot">Mark as Hot Deal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="confirmTireSave()">
+                        <i class="fas fa-check me-2"></i>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-0" id="deleteMessage">Are you sure you want to delete this item?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-2"></i>
+                        Confirm Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="cars-admin.js"></script>
+
+    <!-- Initialize Tooltips -->
+    <script>
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+</html>
