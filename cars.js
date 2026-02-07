@@ -158,30 +158,32 @@ function updateBreadcrumb(tab) {
 
 function showTab(tabName) {
     const tab = document.getElementById(`${tabName}-tab`);
-    if (tab) {
-        // Use Bootstrap's tab show method
-        const tabTrigger = new bootstrap.Tab(tab);
+    if (!tab) return;
+    
+    // Use Bootstrap's tab show method
+    const tabTrigger = new bootstrap.Tab(tab);
+    
+    // Listen for when the tab is fully shown
+    const handleTabShown = function(e) {
+        // Update breadcrumb
+        updateBreadcrumb(tabName);
         
-        // Listen for when the tab is fully shown
-        tab.addEventListener('shown.bs.tab', function handler(e) {
-            // Update breadcrumb
-            updateBreadcrumb(tabName);
-            
-            // Scroll to the hot items section of the active tab
-            setTimeout(() => {
-                const hotSection = document.querySelector(`#${tabName}-content .hot-items-section`);
-                if (hotSection) {
-                    hotSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-                }
-            }, 100);
-            
-            // Remove the event listener after it fires once
-            tab.removeEventListener('shown.bs.tab', handler);
-        });
+        // Scroll to the hot items section of the active tab
+        setTimeout(() => {
+            const hotSection = document.querySelector(`#${tabName}-content .hot-items-section`);
+            if (hotSection) {
+                hotSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            }
+        }, 150);
         
-        // Show the tab
-        tabTrigger.show();
-    }
+        // Remove the event listener after it fires once
+        tab.removeEventListener('shown.bs.tab', handleTabShown);
+    };
+    
+    tab.addEventListener('shown.bs.tab', handleTabShown);
+    
+    // Show the tab
+    tabTrigger.show();
 }
 
 // ========================================
