@@ -157,32 +157,31 @@ function updateBreadcrumb(tab) {
 }
 
 function showTab(tabName) {
-    // First scroll to home/top of main content
-    const mainSection = document.getElementById('home');
-    if (mainSection) {
-        mainSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    
-    // Activate the correct tab
-    setTimeout(() => {
-        const tab = document.getElementById(`${tabName}-tab`);
-        if (tab) {
-            // Use Bootstrap's tab show method
-            const tabTrigger = new bootstrap.Tab(tab);
-            tabTrigger.show();
-            
+    const tab = document.getElementById(`${tabName}-tab`);
+    if (tab) {
+        // Use Bootstrap's tab show method
+        const tabTrigger = new bootstrap.Tab(tab);
+        
+        // Listen for when the tab is fully shown
+        tab.addEventListener('shown.bs.tab', function handler(e) {
             // Update breadcrumb
             updateBreadcrumb(tabName);
             
-            // Scroll to tabs section after a brief delay
+            // Scroll to the hot items section of the active tab
             setTimeout(() => {
-                const tabSection = document.querySelector('.tabs-section');
-                if (tabSection) {
-                    tabSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const hotSection = document.querySelector(`#${tabName}-content .hot-items-section`);
+                if (hotSection) {
+                    hotSection.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
                 }
-            }, 300);
-        }
-    }, 100);
+            }, 100);
+            
+            // Remove the event listener after it fires once
+            tab.removeEventListener('shown.bs.tab', handler);
+        });
+        
+        // Show the tab
+        tabTrigger.show();
+    }
 }
 
 // ========================================
